@@ -1,5 +1,6 @@
-import testModule from './module-a';
+import ParallaxMotion from './ParallaxMotion';
 
-import "../sass/test.sass";
 
-testModule.test();
+var pm = new ParallaxMotion();
+
+pm.run()
