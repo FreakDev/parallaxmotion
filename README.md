@@ -1,15 +1,12 @@
 # boilerplate-babel-webpack
 
-[![npm version](https://badge.fury.io/js/boilerplate-babel-webpack.svg)](https://badge.fury.io/js/boilerplate-babel-webpack)
-[![downloads count](https://img.shields.io/npm/dt/boilerplate-babel-webpack.svg)](https://www.npmjs.com/~piecioshka)
-[![dependencies](https://david-dm.org/piecioshka/boilerplate-babel-webpack.svg)](https://github.com/piecioshka/boilerplate-babel-webpack)
-
-:fork_and_knife: Starter with Babel.js and Webpack
+:fork_and_knife: Starter with Babel.js Sass and Webpack
 
 ## Features
 
 * :white_check_mark: Webpack v4.29.6
 * :white_check_mark: Babel v7.3.4
+* :white_check_mark: Sass (node sass) v4.11.0
 * :white_check_mark: Support syntax ES2015 & ES2016 & ES2017 & ES2018
 * :white_check_mark: Static directory: `public/`
 * :white_check_mark: Source Map of bundle file.
