@@ -1,12 +1,10 @@
 {
-  "name": "boilerplate-babel-webpack",
-  "version": "1.0.4",
-  "description": "Starter with Babel.js and Webpack",
+  "name": "parallax-motion",
+  "version": "0.0.1",
+  "description": "Library intended to facilitate \"paralax style\" animation",
   "license": "MIT",
   "author": {
-    "name": "Piotr Kowalski",
-    "email": "piecioshka@gmail.com",
-    "url": "https://piecioshka.pl"
+    "name": "Mathias Desloges"
   },
   "scripts": {
     "build": "webpack",
@@ -27,18 +25,9 @@
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
   },
-  "keywords": [
-    "webpack",
-    "babel",
-    "starter",
-    "source map",
-    "explorer",
-    "count",
-    "loc"
-  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/piecioshka/boilerplate-babel-webpack"
+    "url": "https://github.com/FreakDev/parallaxmotion"
   },
   "dependencies": {
     "domready": "^1.0.8"
