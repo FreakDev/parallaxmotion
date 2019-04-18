@@ -6,14 +6,16 @@ export default class StopMotionDisplay extends PluginAbstract {
 
     init() {
         let labelNodes = Array.from(document.querySelectorAll('.motion-label'))
-        const getData = (node, attrName) => {
-            return node.getAttribute('data-' + attrName)
+        const getData = (node, attrName, defaultValue) => {
+            let attributeValue = node.getAttribute('data-' + attrName)
+            return attributeValue !== undefined ? attributeValue : defaultValue 
         }
 
         this._labels = labelNodes.map((node) => {
             node.style.top = getData(node, 'position-top')
             node.style.left = getData(node, 'position-left')
-            
+            node.style.fontSize = getData(node, 'font-size', '1em')
+
             return {
                 id: node.id,
                 from: parseInt(getData(node, 'appear-from'), 10),
