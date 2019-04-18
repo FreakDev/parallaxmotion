@@ -2,7 +2,6 @@ import "../sass/core.sass";
 
 const DEFAULT_CONFIG = {
     containerDomSelector: 'body',
-    assetsContainerDomSelector: '#assets',
     scrollThreshold: 50
 }
 
@@ -28,10 +27,13 @@ export default class ParallaxMotion {
     /**
      * animation core engine
      * @constructor
+     * @param {AssetCollection} assets
      * @param {object} options - set of key/value pairs to configure animation
      */
-    constructor(options) {
+    constructor(assets, options = {}) {
         this._config = Object.assign({}, DEFAULT_CONFIG, options)
+
+        this._assets = assets
 
         this._onScroll = this._onScroll.bind(this)
     }
@@ -46,18 +48,11 @@ export default class ParallaxMotion {
     }
 
     _initDom() {
-        let assetsContainerDom,
-            assetCount,
+        let assetCount,
             spacer,
             frameHeight,
             frameWidth
 
-        assetsContainerDom = document.querySelector(this._config.assetsContainerDomSelector)
-
-        if (assetsContainerDom === null)
-            throw new Error('invalid query selector for assetsContainerDomSelector property')
-
-        this._assets = JSON.parse(assetsContainerDom.innerHTML)
         assetCount = this._assets.length
 
         this._domContainer = document.querySelector(this._config.containerDomSelector)
@@ -84,7 +79,7 @@ export default class ParallaxMotion {
         this._dom.height = frameHeight
         this._dom.width = frameWidth
 
-        this._dom.src = this._assets[0]
+        this._dom.src = this._assets.getItem(0)
 
     }
 
@@ -96,6 +91,6 @@ export default class ParallaxMotion {
     }
 
     _onScroll() {
-        this._dom.src = this._assets[Math.floor(this._domContainer.scrollTop / this._config.scrollThreshold)]
+        this._dom.src = this._assets.getItem(Math.floor(this._domContainer.scrollTop / this._config.scrollThreshold))
     }
 }
