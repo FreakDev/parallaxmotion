@@ -1,15 +1,12 @@
 import PluginAbstract from './PluginAbstract'
 
-const DEFAULT_CONFIG = {
-    containerDomSelector: 'body',
-    scrollThreshold: 50
-}
-
 export default class StopMotionDisplay extends PluginAbstract {
     /**
      * @var {Element} _domContainer
      */
     _domContainer
+
+    _containerDomSelector
 
     /**
      * @var {Element} _dom
@@ -24,22 +21,22 @@ export default class StopMotionDisplay extends PluginAbstract {
      * @param {AssetCollection} assets
      * @param {object} options - set of key/value pairs to configure animation
      */
-    constructor(assets, options = {}) {
+    constructor(assets, containerDomSelector = 'body') {
         super()
 
-        this._config = Object.assign({}, DEFAULT_CONFIG, options)
+        this._containerDomSelector = containerDomSelector
 
         this._assets = assets
     }
     
-    init() {
+    init(scrollThreshold) {
         let assetCount,
             spacer,
             frameHeight
 
         assetCount = this._assets.length
 
-        this._domContainer = document.querySelector(this._config.containerDomSelector)
+        this._domContainer = document.querySelector(this._containerDomSelector)
 
         if (this._domContainer === null)
             throw new Error('invalid query selector for containerDomSelector property')
@@ -51,7 +48,7 @@ export default class StopMotionDisplay extends PluginAbstract {
         this._dom.classList.add('parallaxmotion-img')
 
         frameHeight = this._domContainer.clientHeight
-        spacer.style.height = frameHeight + (assetCount - 1) * this._config.scrollThreshold
+        spacer.style.height = frameHeight + (assetCount - 1) * scrollThreshold
 
         this._domContainer.insertBefore(this._dom, this._domContainer.firstChild)
         this._domContainer.insertBefore(spacer, this._dom)
@@ -67,8 +64,7 @@ export default class StopMotionDisplay extends PluginAbstract {
     }
 
     onScroll(e) {
-        let scrollToItem = Math.floor(e.scrollValue / this._config.scrollThreshold)
-        this.setImage(this._assets.getItem(scrollToItem))        
+        this.setImage(this._assets.getItem(e.scrollValue))        
     }
 
     setImage(src) {

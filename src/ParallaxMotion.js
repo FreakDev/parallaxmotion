@@ -2,6 +2,8 @@ import "../sass/core.sass";
 
 export default class ParallaxMotion {
 
+    _scrollThreshold
+
     _previousScrollValue
 
     _direction = -1
@@ -15,8 +17,10 @@ export default class ParallaxMotion {
      * animation core engine
      * @constructor
      */
-    constructor(plugins = []) {
+    constructor(plugins = [], scrollThreshold = 50) {
         this._plugins = plugins
+
+        this._scrollThreshold = scrollThreshold
 
         this._onScroll = this._onScroll.bind(this)
     }
@@ -26,17 +30,21 @@ export default class ParallaxMotion {
      */
     run() {
         let initPromises = this._plugins.map((plugin) => {
-            return plugin.init()
+            return plugin.init(this._scrollThreshold)
         })
 
         Promise.all(initPromises).then(() => {
+            this._dispatchScrollEvent({
+                scrollValue: 0,
+                direction: this._direction
+            })
             window.addEventListener('scroll', this._onScroll)
         })
     }
 
     _onScroll() {
 
-        let scrollValue = window.scrollY,
+        let scrollValue = Math.floor(window.scrollY / this._scrollThreshold),
             delta = scrollValue - this._previousScrollValue,
             direction = delta / Math.abs(delta),
             event = {
@@ -57,10 +65,14 @@ export default class ParallaxMotion {
         this._direction = direction
         this._previousScrollValue = scrollValue
 
+        this._dispatchScrollEvent(event)
+
+    }
+
+    _dispatchScrollEvent(event) {
         this._plugins.forEach((plugin) => {
             plugin.onScroll(event)
-        })
-
+        })        
     }
 
 

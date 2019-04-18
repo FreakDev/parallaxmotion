@@ -16,8 +16,8 @@ export default class StopMotionDisplay extends PluginAbstract {
             
             return {
                 id: node.id,
-                from: getData(node, 'appear-from'),
-                to: getData(node, 'disappear-from'),
+                from: parseInt(getData(node, 'appear-from'), 10),
+                to: parseInt(getData(node, 'disappear-from'), 10),
             }
         })
         
@@ -31,7 +31,7 @@ export default class StopMotionDisplay extends PluginAbstract {
             } else {
                 document.querySelector('#' + label.id).classList.remove('show')
             }
-        })        
+        })
     }
 
 }
