@@ -13,6 +13,8 @@ export default class StopMotionDisplay extends PluginAbstract {
      */
     _dom
 
+    _spacer
+
     _assets
 
     /**
@@ -30,9 +32,7 @@ export default class StopMotionDisplay extends PluginAbstract {
     }
     
     init(scrollThreshold) {
-        let assetCount,
-            spacer,
-            frameHeight
+        let assetCount
 
         assetCount = this._assets.length
 
@@ -41,21 +41,23 @@ export default class StopMotionDisplay extends PluginAbstract {
         if (this._domContainer === null)
             throw new Error('invalid query selector for containerDomSelector property')
 
-        spacer = document.createElement('div')
+        this._spacer = document.createElement('div')
+
+        this._setSpacerHeight(scrollThreshold)
+        window.addEventListener('resize', () => {
+            this._setSpacerHeight(scrollThreshold)
+        })
 
         this._dom = document.createElement('div')
 
         this._dom.classList.add('parallaxmotion-img')
 
-        frameHeight = this._domContainer.clientHeight
-        spacer.style.height = frameHeight + (assetCount - 1) * scrollThreshold
-
         this._domContainer.insertBefore(this._dom, this._domContainer.firstChild)
-        this._domContainer.insertBefore(spacer, this._dom)
+        this._domContainer.insertBefore(this._spacer, this._dom)
 
         this._domContainer.classList.add('parallaxmotion')
 
-        this._dom.style.height = frameHeight
+        this._dom.style.height = '100%'
         this._dom.style.width = '100%'
 
         this.setImage(this._assets.getItem(0))
@@ -69,5 +71,9 @@ export default class StopMotionDisplay extends PluginAbstract {
 
     setImage(src) {
         this._dom.style.backgroundImage = 'url(' + src + ')'
-    }    
+    }
+    
+    _setSpacerHeight(scrollThreshold) {
+        this._spacer.style.height = this._domContainer.clientHeight + (this._assets.length - 1) * scrollThreshold
+    }
 }
