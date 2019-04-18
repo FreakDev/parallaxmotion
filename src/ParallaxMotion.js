@@ -19,6 +19,12 @@ export default class ParallaxMotion {
 
     _assets
 
+    _previousScrollValue
+
+    _direction = -1
+
+    _labels = []
+
     /**
      * @var {object} _config - config object contains at least all the keys defined in DEFAULT_CONFIG
      */
@@ -36,6 +42,7 @@ export default class ParallaxMotion {
         this._assets = assets
 
         this._onScroll = this._onScroll.bind(this)
+
     }
 
     /**
@@ -44,6 +51,8 @@ export default class ParallaxMotion {
     run() {
         this._initDom()
 
+        this._initLabel()
+
         this._initDomEventListener()
     }
 
@@ -51,7 +60,7 @@ export default class ParallaxMotion {
         let assetCount,
             spacer,
             frameHeight
-            
+
         assetCount = this._assets.length
 
         this._domContainer = document.querySelector(this._config.containerDomSelector)
@@ -87,8 +96,51 @@ export default class ParallaxMotion {
 
     }
 
+    _initLabel() {
+        let labelNodes = Array.from(document.querySelectorAll('.motion-label'))
+        const getData = (node, attrName) => {
+            return node.getAttribute('data-' + attrName)
+        }
+
+        this._labels = labelNodes.map((node) => {
+            node.style.top = getData(node, 'position-top')
+            node.style.left = getData(node, 'position-left')
+            
+            return {
+                id: node.id,
+                from: getData(node, 'appear-from'),
+                to: getData(node, 'disappear-from'),
+            }
+        })
+
+    }
+
     _onScroll() {
-        this.setImage(this._assets.getItem(Math.floor(this._domContainer.scrollTop / this._config.scrollThreshold)))
+        let newDirection = (this._domContainer.scrollTop - this._previousScrollValue) / Math.abs(this._domContainer.scrollTop - this._previousScrollValue),
+            scrollToItem = Math.floor(this._domContainer.scrollTop / this._config.scrollThreshold)
+
+        if (newDirection !== this._direction) {
+            if (newDirection > 0) {
+                document.body.classList.remove('motion-down')
+                document.body.classList.add('motion-up')
+            } else {
+                document.body.classList.remove('motion-up')
+                document.body.classList.add('motion-down')
+            }    
+        }
+
+        this._labels.forEach((label) => {
+            if (label.from <= scrollToItem && scrollToItem <= label.to) {
+                document.querySelector('#' + label.id).classList.add('show')
+            } else {
+                document.querySelector('#' + label.id).classList.remove('show')
+            }
+        })
+
+        this._direction = newDirection
+        this._previousScrollValue = this._domContainer.scrollTop
+
+        this.setImage(this._assets.getItem(scrollToItem))
     }
 
     setImage(src) {
