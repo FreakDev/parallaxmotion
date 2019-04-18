@@ -50,9 +50,8 @@ export default class ParallaxMotion {
     _initDom() {
         let assetCount,
             spacer,
-            frameHeight,
-            frameWidth
-
+            frameHeight
+            
         assetCount = this._assets.length
 
         this._domContainer = document.querySelector(this._config.containerDomSelector)
@@ -62,7 +61,7 @@ export default class ParallaxMotion {
 
         spacer = document.createElement('div')
 
-        this._dom = document.createElement('img')
+        this._dom = document.createElement('div')
 
         this._dom.classList.add('parallaxmotion-img')
 
@@ -74,23 +73,25 @@ export default class ParallaxMotion {
 
         this._domContainer.classList.add('parallaxmotion')
 
-        frameWidth = this._domContainer.clientWidth
+        this._dom.style.height = frameHeight
+        this._dom.style.width = '100%'
 
-        this._dom.height = frameHeight
-        this._dom.width = frameWidth
-
-        this._dom.src = this._assets.getItem(0)
+        this.setImage(this._assets.getItem(0))
 
     }
 
     _initDomEventListener() {
 
-        this._domContainer.addEventListener('scroll', this._onScroll)
+        // this._domContainer.addEventListener('scroll', this._onScroll)
         window.addEventListener('scroll', this._onScroll)
 
     }
 
     _onScroll() {
-        this._dom.src = this._assets.getItem(Math.floor(this._domContainer.scrollTop / this._config.scrollThreshold))
+        this.setImage(this._assets.getItem(Math.floor(this._domContainer.scrollTop / this._config.scrollThreshold)))
+    }
+
+    setImage(src) {
+        this._dom.style.backgroundImage = 'url(' + src + ')'
     }
 }
