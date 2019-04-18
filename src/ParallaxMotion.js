@@ -62,11 +62,11 @@ export default class ParallaxMotion {
             }    
         }
 
+        if (scrollValue !== this._previousScrollValue)
+            this._dispatchScrollEvent(event)
+
         this._direction = direction
         this._previousScrollValue = scrollValue
-
-        this._dispatchScrollEvent(event)
-
     }
 
     _dispatchScrollEvent(event) {
