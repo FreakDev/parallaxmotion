@@ -9,13 +9,9 @@
     "url": "https://piecioshka.pl"
   },
   "scripts": {
-    "audit": "source-map-explorer public/dist/main.bundle.js",
-    "clear": "rm -rf public/dist/",
-    "clear:all": "rm -rf node_modules/ && npm run clear",
-    "count": "find src -name '*.js' | xargs wc -l | sort -r",
     "build": "webpack",
     "watch": "webpack -w",
-    "start": "node public/dist/main.bundle.js"
+    "start": "serve public"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -26,6 +22,7 @@
     "mini-css-extract-plugin": "^0.6.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
+    "serve": "^11.0.0",
     "source-map-explorer": "^1.7.0",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
