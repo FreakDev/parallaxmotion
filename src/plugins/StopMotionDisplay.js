@@ -32,20 +32,18 @@ export default class StopMotionDisplay extends PluginAbstract {
     }
     
     init(scrollThreshold) {
-        let assetCount
-
-        assetCount = this._assets.length
-
         this._domContainer = document.querySelector(this._containerDomSelector)
 
         if (this._domContainer === null)
             throw new Error('invalid query selector for containerDomSelector property')
 
         this._spacer = document.createElement('div')
+        this._spacer.innerHTML = '&nbsp;'
 
-        this._setSpacerHeight(scrollThreshold)
+        let spacerHeight = (this._assets.length - 1) * scrollThreshold
+        this._setSpacerHeight(spacerHeight)
         window.addEventListener('resize', () => {
-            this._setSpacerHeight(scrollThreshold)
+            this._setSpacerHeight(spacerHeight)
         })
 
         this._dom = document.createElement('div')
@@ -73,7 +71,7 @@ export default class StopMotionDisplay extends PluginAbstract {
         this._dom.style.backgroundImage = 'url(' + src + ')'
     }
     
-    _setSpacerHeight(scrollThreshold) {
-        this._spacer.style.height = this._domContainer.clientHeight + (this._assets.length - 1) * scrollThreshold
+    _setSpacerHeight(height) {
+        this._spacer.style.height = this._domContainer.clientHeight + height + 'px'
     }
 }
