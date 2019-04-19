@@ -72,6 +72,6 @@ export default class StopMotionDisplay extends PluginAbstract {
     }
     
     _setSpacerHeight(height) {
-        this._spacer.style.height = this._domContainer.clientHeight + height + 'px'
+        this._spacer.style.height = window.innerHeight + height + 'px'
     }
 }
